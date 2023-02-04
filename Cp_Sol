@@ -54,7 +54,15 @@
     }                       
     return result;
 }
-                                               // Two
+                                               // TWO_EDITION
+                                               
+                                               
+                                               
+                                               
+                                               
+                                               
+                                               
+                                               
                                                
 function solve(input: string) -> string {
     let lines = input.split("\n");
