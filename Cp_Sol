@@ -41,10 +41,6 @@
                     break;
                 }
             }
-            
-            
-            
-            
             for(let i=0;i<=cnt;i+=1)
                {
                   result+=string(a[i]);
@@ -54,17 +50,72 @@
                    result+=string(b[i]);
                }
                    result+="\n";
-            
-        }
-        
-               
-   
-        
-               
-                 
+        }          
+    }                       
+    return result;
+}
+                                               // Two
+                                               
+function solve(input: string) -> string {
+    let lines = input.split("\n");
+    let N = int(lines[0]);
+    let re = [from x in lines[1].split(" ")select int(x)];
+    
+    let val = 0;
+    for(let i = 0;i<N;i+=1){
+        val+=re[i];
     }
-        
-                            
-                            
+    for(let i=0;i<N;i+=1){
+        re.push(re[i]);
+    }
+    let pre:int[] = [];
+    pre.push(0);
+    for(let i=0;i<2*N;i+=1){
+        pre.push(pre[i]+re[i]);
+    }
+    let result = "";
+    for(let i=0;i<N;i+=1){
+        let x = val/2;
+        let low = i+1;
+        let high = low-1+N;
+        let ans = 10000000000000000;
+        while (low<=high)
+        {
+            let mid = (low+high) / 2;
+            if (pre[mid] - pre[i] > x)
+            {
+                high = mid - 1;
+                let bal1 = pre[mid] - pre[i];
+                let bal2= val - pre[mid]+pre[i];
+                let dis = bal1- bal2;
+                if (dis < 0)
+                {
+                    dis = -dis;
+                }
+                if(dis<ans){
+                    ans = dis;
+                }
+            }
+            else
+            {
+                low = mid + 1;
+                let bal1 = pre[mid] - pre[i];
+                let bal2= val - pre[mid] + pre[i];
+                let dis = bal1 - bal2;
+                if (dis < 0){
+                    dis = -dis;
+                }
+             	if(dis<ans){
+                    ans = dis;
+                }
+            }
+        }
+        if(i==N-1){
+            result += string(ans)+"\n";
+        }
+        else {
+        	result += string(ans)+" ";
+        }
+    }
     return result;
 }
