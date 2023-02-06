@@ -127,3 +127,69 @@ function solve(input: string) -> string {
     }
     return result;
 }
+                                                    
+                                                    THREE
+
+
+
+                               function solve(input: string) -> string {
+      let lines = input.split("\n");
+      let result = "";
+      let k=0;
+    for(let i=1;i<=lines.length();i+=1)
+    {
+        let a = lines[k].split("");
+        if(a.length()==0){
+            break;
+        }
+        k+=1;
+        let b:int[]=[];
+        let c:int[]=[];
+        let d:int[]=[];
+        for(let j=0;j<a.length();j+=1)
+        {
+            b.push(int(a[j]));
+        }
+         b.sort();
+        for(let j=b.length()-1;j>=0;j-=1)
+         {
+           c.push(b[j]);             
+         }
+         let cnt=0;
+         for(let j=0;j<b.length();j+=1)
+            {
+                  if(b[j]!=0)
+                  {
+                      d.push(b[j]);
+                      cnt=j;
+                      break;
+                  }
+            }
+         for(let j=0;j<b.length();j+=1)
+            {
+                  if(j!=cnt)
+                  {
+                      d.push(b[j]);
+                  }
+            }
+          let r1=0;
+          let r2=0;
+          let cn=1;
+          for(let j=c.length()-1;j>=0;j-=1)
+             {
+                       r1+=(cn*c[j]);
+                       cn*=10;
+             }
+          cn=1;
+          for(let j=d.length()-1;j>=0;j-=1)
+             {
+                       r2+=(cn*d[j]);
+                       cn*=10;
+             }
+           let ans=r1-r2;
+           let ans2=ans/9;
+      result+=string(r1)+" - "+string(r2)+" = "+string(ans)+" = "+"9"+" * "+string(ans2)+"\n";
+                
+    }
+    return result;
+}
