@@ -1,0 +1,153 @@
+                                                        //dmoj_coi14p4
+                                                        struct point {
+    x: int, y: int, 
+    function less(p1: point, p2: point) -> bool {
+        if(p1.x == p2.x){
+            return p1.y < p2.y;
+        }
+        return p1.x < p2.x;
+    }
+}  
+
+function trar(a: point, b: point, c: point) -> int {
+    return a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
+}
+
+function ar(a: point, b: point, c: point) -> int {
+    let A = trar(a, b, c);
+    if(A >= 0){
+        return A;
+    }
+    else{
+        return -A;
+    }
+}
+
+function cw(a: point, b: point, c: point) -> bool {
+    return trar(a, b, c) < 0;
+}
+
+function ccw(a: point, b: point, c: point) -> bool {
+    return trar(a, b, c) > 0;
+}
+
+function nxt(it: int, sz: int) -> int {
+    if(it == sz - 1){
+        return 0;
+    }
+    else{
+        return it + 1;
+    }
+}
+
+function prv(it: int, sz: int) -> int {
+    if(it == 0){
+        return sz - 1;
+    }
+    else{
+        return it - 1;
+    }
+}
+
+function solve(input: string) -> string {
+    let Lines = input.split("\n");
+    let N = int(Lines[0]);
+    let ch: point[] = [];
+    let p: point[] = [];
+    for(let i = 1; i <= N; i += 1){
+        let xy = Lines[i].split(" ");
+        let x = int(xy[0]);
+        let y = int(xy[1]);
+        ch.push(new point{x: x, y: y});
+    }
+    let M = int(Lines[N + 1]);
+    for(let i = N + 2; i <= N + M + 1; i += 1){
+        let xy = Lines[i].split(" ");
+        let x = int(xy[0]);
+        let y = int(xy[1]);
+        p.push(new point{x: x, y: y});
+    }
+    p.sort();
+    let U: point[] = [];
+    let L: point[] = [];
+    U.push(p[0]);
+    L.push(p[0]);
+    for(let i = 1; i < M; i += 1){
+        if(i == M - 1 || cw(p[0], p[i], p[M - 1])){
+            while(U.length() > 1){
+                if(!cw(U[U.length() - 2], U[U.length() - 1], p[i])){
+                    U.pop();
+                }
+                else{
+                    break;
+                }
+            }
+            U.push(p[i]);
+        }
+        if(i == M - 1 || ccw(p[0], p[i], p[M - 1])){
+            while(L.length() > 1){
+                if(!ccw(L[L.length() - 2], L[L.length() - 1], p[i])){
+                    L.pop();
+                }
+                else{
+                    break;
+                }
+            }
+            L.push(p[i]);
+        }
+    }
+    let H: point[] = [];
+    for(let i = 0; i < L.length(); i += 1){
+        H.push(L[i]);
+    }
+    for(let i = U.length() - 2; i > 0; i -= 1){
+        H.push(U[i]);
+    }
+    M = H.length();
+    let it1 = 0;
+    for(let i = 0; i < M; i += 1){
+        let itp = prv(i, M);
+        let itn = nxt(i, M);
+        if(itn == i){
+            it1 = i;
+            break;
+        }
+        if(!ccw(ch[0], H[itp], H[i]) && !ccw(ch[0], H[itn], H[i])){
+            it1 = i;
+            break;
+        }
+    }
+    let it2 = 1;
+    let mx = 0;
+    let currar = 0;
+    while(ccw(ch[0], ch[it2], H[it1])){
+        if(currar > mx){
+            mx = currar;
+        }
+        currar += ar(ch[0], ch[it2], ch[nxt(it2, N)]);
+        it2 = nxt(it2, N);
+    }
+    for(let i = 1; i < N; i += 1){
+        currar -= ar(ch[i - 1], ch[i], ch[it2]);
+        let itp = prv(it1, M);
+        let itn = nxt(it1, M);
+        while(true){
+            if(itp == it1 || (!ccw(ch[i], H[itp], H[it1]) && !ccw(ch[i], H[itn], H[it1]))){
+                break;
+            }
+            itp = nxt(itp, M);
+            it1 = nxt(it1, M);
+            itn = nxt(itn, M);
+        }
+        while(ccw(ch[i], ch[it2], H[it1])){
+            if(currar > mx){
+                mx = currar;
+            }
+            currar += ar(ch[i], ch[it2], ch[nxt(it2, N)]);
+            it2 = nxt(it2, N);
+        }
+    }
+            
+    let answer = string(mx);
+    return answer;
+}
