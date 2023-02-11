@@ -193,3 +193,50 @@ function solve(input: string) -> string {
     }
     return result;
 }
+                                                          // Four
+                                                          
+                                                          function round(p: float, after_dot: int) -> string {   
+    let sign = ""; 
+    if (p < 0.0) { 
+        sign = "-"; 
+        p = -p; 
+    } 
+ 
+    let coeff = 1; 
+    for (let i = 0; i < after_dot; i += 1) { 
+        coeff *= 10; 
+    } 
+     
+    p *= float(coeff); 
+    let int_p = int(p + 0.0); 
+   
+  let after_string = string(int_p % coeff); 
+    for (let i = 0; after_string.length() < after_dot; i += 1) { 
+        after_string = "0" + after_string; 
+    } 
+     
+    return sign + string(int_p / coeff) + "." + after_string; 
+}
+
+
+function solve(input: string) -> string {
+    let ans = "";
+    let lines = input.split("\n");
+    let te = int(lines[0]);
+    for (let i = 0;i < te;i+=1) {
+        let n = int(lines[i+1]);
+        let left = 0.0000;
+        let right = 1000.0000;
+        while (right - left > 0.0000001) { 
+            let m = (right + left)/2.0;
+            if (m*m*m >= float(n)) {
+                right = m;
+            }
+            else {
+                left = m;
+            }
+        }
+        ans += round(right,4) + "\n";
+    }
+ 
+}
