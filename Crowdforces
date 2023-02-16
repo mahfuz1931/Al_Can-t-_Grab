@@ -151,3 +151,56 @@ function solve(input: string) -> string {
     let answer = string(mx);
     return answer;
 }
+
+
+
+
+
+
+                                //https://onlinejudge.org/external/115/p11524.pdf
+                                function round(p: float, after_dot: int) -> string {   
+    let sign = ""; 
+    if (p < 0.0) { 
+        sign = "-"; 
+        p = -p; 
+    } 
+ 
+    let coeff = 1; 
+    for (let i = 0; i < after_dot; i += 1) { 
+        coeff *= 10; 
+    } 
+     
+    p *= float(coeff); 
+    let int_p = int(p + 0.5); 
+   
+  let after_string = string(int_p % coeff); 
+    for (let i = 0; after_string.length() < after_dot; i += 1) { 
+        after_string = "0" + after_string; 
+    } 
+     
+    return sign + string(int_p / coeff) + "." + after_string; 
+}
+
+
+function solve(input: string) -> string {
+    let lines = input.split("\n");
+    let testcase = int(lines[0]);	
+    let result = "";
+    let i = 1;
+    for(let tc = 1;tc<=testcase;tc+=1){
+        let r = float(lines[i]); i+=1;
+        let p = [from x in lines[i].split(" ")select float(x)]; i+=1;
+        let q = [from x in lines[i].split(" ")select float(x)]; i+=1;
+        let s = [from x in lines[i].split(" ")select float(x)]; i+=1;
+     	let a = 1.0;
+   		 let b = (q[0]+q[1]) / ( (q[0]*1.0/p[1]) * (p[1]+p[0]));
+   		 let c = (s[0]+s[1]) / ( (s[1]/p[0]) * (p[1]+p[0]));
+   		 let k = r*1.0*(sqrt((a+b+c)/(b+c-a)/(a+c-b)/(a+b-c)))*2.0;
+   		 let ans= round((a+b+c)*r*k*0.5,4);
+         result+=string(ans)+"\n";
+       	
+               
+    }                       
+    return result;
+    return ""
+}
