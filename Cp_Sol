@@ -242,3 +242,67 @@ function solve(input: string) -> string {
 }
                 //Important.
                 let mp = {0:0};
+                                                             // NOT USE string, CONVERT THE ARRAY into INTEGER ARRAY
+                                                             function solve(input: string) -> string {
+    let mp :{int:string} = {};
+    let a = "abcdefghijklmnopqrstuvwxyz";
+    for(let i = 0;i<26;i+=1){
+        mp[a.charCodeAt(i)] = a[i];
+    }
+    let lines = input.split("\n");
+    let result = "";
+    for(let i=0;i<lines.length();i+=1)
+    {
+        
+        if(lines[i]=="#")
+        {
+            break;
+        }
+        let s:int[] = [];
+        for(let j = 0;j<lines[i].length();j+=1){
+            s.push(lines[i].charCodeAt(j));
+        }
+        let in=-1;
+         for(let j=s.length()-2;j>=0;j-=1)
+        {
+                if(s[j]<s[j+1])
+                {
+                    in=j;
+                    break;
+                }
+         }
+        if(in<0)
+        {
+            result+="No Successor\n";
+        }
+        else
+        {
+            let temp=0;
+            for(let k=s.length()-1;k>in;k-=1)
+            {
+                 if(s[k]>s[in])
+                {
+                    temp=s[k];
+                    s[k]=s[in];
+                    s[in]=temp;
+                    break;
+                }
+            }
+            for(let k=0;k<=in;k+=1)
+            {
+             result+=mp[s[k]];
+            }
+            for(let k=s.length()-1;k>in;k-=1)
+            {
+             result+=mp[s[k]];
+            }
+                
+           result+="\n";   
+       }
+      
+   }
+   
+    return result;
+    
+}
+
